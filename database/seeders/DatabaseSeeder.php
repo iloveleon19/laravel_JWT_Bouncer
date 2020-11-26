@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
+use Bouncer;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,12 +17,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // 產生權限表
+        $this->call(BouncerSeeder::class);
+
         // \App\Models\User::factory(10)->create();
         User::truncate();
-        User::create([
+        $user = User::create([
             'name' => 'admin',
             'email' => 'admin@mail.com',
             'password' => Hash::make('password'),
         ]);
+
+        $user->assign('superadmin');
     }
 }
